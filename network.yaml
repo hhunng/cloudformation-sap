@@ -1,5 +1,5 @@
-AWSTemplateFormatVersion: 2010-09-09
-Description: Dual VPC IPSec lab with inline dynamic config (Helm-like values)..
+AWSTemplateFormatVersion: "2010-09-09"
+Description: "Dual VPC IPSec lab with inline dynamic config (Helm-like values)."
 
 Mappings:
   Values:
