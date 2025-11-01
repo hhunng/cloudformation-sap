@@ -1,4 +1,8 @@
 AWSTemplateFormatVersion: "2010-09-09"
+Description: "Very simple Security Group"
+
+Resources:
+AWSTemplateFormatVersion: "2010-09-09"
 Description: "Dual VPC IPSec lab with inline dynamic config (Helm-like values)."
 
 Mappings:
@@ -23,23 +27,23 @@ Resources:
     UpdateReplacePolicy: Delete
     DeletionPolicy: Delete
     Properties:
-      CidrBlock: !FindInMap [ Values, Config, VPCA_CIDR ]
-      EnableDnsSupport: !FindInMap [ Values, Config, VPCA_EnableDnsSupport ]
-      EnableDnsHostnames: !FindInMap [ Values, Config, VPCA_EnableDnsHostnames ]
-      InstanceTenancy: !FindInMap [ Values, Config, DefaultTenancy ]
+      CidrBlock: !FindInMap [Values, Config, VPCA_CIDR]
+      EnableDnsSupport: !FindInMap [Values, Config, VPCA_EnableDnsSupport]
+      EnableDnsHostnames: !FindInMap [Values, Config, VPCA_EnableDnsHostnames]
+      InstanceTenancy: !FindInMap [Values, Config, DefaultTenancy]
       Tags:
-      - Key: Name
-        Value: !FindInMap [ Values, Config, VPCAName ]
+        - Key: Name
+          Value: !FindInMap [Values, Config, VPCAName]
 
   VPCB:
     Type: AWS::EC2::VPC
     UpdateReplacePolicy: Delete
     DeletionPolicy: Delete
     Properties:
-      CidrBlock: !FindInMap [ Values, Config, VPCB_CIDR ]
-      EnableDnsSupport: !FindInMap [ Values, Config, VPCB_EnableDnsSupport ]
-      EnableDnsHostnames: !FindInMap [ Values, Config, VPCB_EnableDnsHostnames ]
-      InstanceTenancy: !FindInMap [ Values, Config, DefaultTenancy ]
+      CidrBlock: !FindInMap [Values, Config, VPCB_CIDR]
+      EnableDnsSupport: !FindInMap [Values, Config, VPCB_EnableDnsSupport]
+      EnableDnsHostnames: !FindInMap [Values, Config, VPCB_EnableDnsHostnames]
+      InstanceTenancy: !FindInMap [Values, Config, DefaultTenancy]
       Tags:
-      - Key: Name
-        Value: !FindInMap [ Values, Config, VPCBName ]
+        - Key: Name
+          Value: !FindInMap [Values, Config, VPCBName]
