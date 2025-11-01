@@ -8,8 +8,8 @@ Description: "Dual VPC IPSec lab with inline dynamic config (Helm-like values)."
 Mappings:
   Values:
     Config:
-      VPCAName: "ipsec-vpc-lab"
-      VPCBName: "ipsec-customer-lab"
+      VPCAName: "VPCA"
+      VPCBName: "VPCB"
 
       VPCACIDR: "10.0.0.0/16"
       VPCBCIDR: "192.168.0.0/16"
