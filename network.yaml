@@ -99,3 +99,28 @@ Resources:
       Tags:
       - Key: Name
         Value: VPCPeeringConnection
+  VPCAIGW:
+    Type: AWS::EC2::InternetGateway
+    Properties:
+      Tags: 
+        - Key: Name
+          Value: VPCAIGW
+
+  VPCBIGW:
+    Type: AWS::EC2::InternetGateway
+    Properties:
+      Tags: 
+        - Key: Name
+          Value: VPCBIGW
+
+  VPCAIGWAttachment:
+    Type: AWS::EC2::VPCGatewayAttachment
+    Properties:
+      InternetGatewayId: !Ref VPCAIGW
+      VpcId: !Ref VPCA
+
+  VPCBIGWAttachment:
+    Type: AWS::EC2::VPCGatewayAttachment
+    Properties:
+      InternetGatewayId: !Ref VPCBIGW
+      VpcId: !Ref VPCB
