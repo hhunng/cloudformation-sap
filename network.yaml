@@ -1,45 +1,14 @@
 AWSTemplateFormatVersion: "2010-09-09"
-Description: "Dual VPC IPSec lab with inline dynamic config (Helm-like values)."
-
-Mappings:
-  Values:
-    Config:
-      VPCAName: "ipsec-vpc-lab"
-      VPCBName: "ipsec-customer-lab"
-
-      VPCAcidr: "10.0.0.0/16"
-      VPCBcidr: "192.168.0.0/16"
-
-      VPCAEnableDnsHostnames: true
-      VPCAEnableDnsSupport: true
-      VPCBEnableDnsHostnames: false
-      VPCBEnableDnsSupport: true
-
-      DefaultTenancy: "default"
+Description: "Very simple Security Group"
 
 Resources:
-  VPCA:
-    Type: AWS::EC2::VPC
-    UpdateReplacePolicy: Delete
-    DeletionPolicy: Delete
+  MySecurityGroup:
+    Type: AWS::EC2::SecurityGroup
     Properties:
-      CidrBlock: !FindInMap [ Values, Config, VPCAcidr ]
-      EnableDnsSupport: !FindInMap [ Values, Config, VPCAEnableDnsSupport ]
-      EnableDnsHostnames: !FindInMap [ Values, Config, VPCAEnableDnsHostnames ]
-      InstanceTenancy: !FindInMap [ Values, Config, DefaultTenancy ]
-      Tags:
-      - Key: Name
-        Value: !FindInMap [ Values, Config, VPCAName ]
-
-  VPCB:
-    Type: AWS::EC2::VPC
-    UpdateReplacePolicy: Delete
-    DeletionPolicy: Delete
-    Properties:
-      CidrBlock: !FindInMap [ Values, Config, VPCBcidr ]
-      EnableDnsSupport: !FindInMap [ Values, Config, VPCBEnableDnsSupport ]
-      EnableDnsHostnames: !FindInMap [ Values, Config, VPCBEnableDnsHostnames ]
-      InstanceTenancy: !FindInMap [ Values, Config, DefaultTenancy ]
-      Tags:
-      - Key: Name
-        Value: !FindInMap [ Values, Config, VPCBName ]
+      GroupDescription: "Allow SSH"
+      VpcId: vpc-02f9e644b44ee9548
+      SecurityGroupIngress:
+      - IpProtocol: tcp
+        FromPort: 22
+        ToPort: 22
+        CidrIp: 0.0.0.0/0
