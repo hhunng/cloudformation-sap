@@ -50,3 +50,13 @@ Resources:
       Tags:
         - Key: Name
           Value: !FindInMap [Values, Config, VPCBName]
+
+
+  VPCPeeringConnection:
+    Type: AWS::EC2::VPCPeeringConnection
+    Properties:
+      VpcId: !Ref VPCA
+      PeerVpcId: !Ref VPCB
+      Tags:
+      - Key: Name
+        Value: VPCPeeringConnection
