@@ -11,13 +11,13 @@ Mappings:
       VPCAName: "ipsec-vpc-lab"
       VPCBName: "ipsec-customer-lab"
 
-      VPCA_CIDR: "10.0.0.0/16"
-      VPCB_CIDR: "192.168.0.0/16"
+      VPCACIDR: "10.0.0.0/16"
+      VPCBCIDR: "192.168.0.0/16"
 
-      VPCA_EnableDnsHostnames: true
-      VPCA_EnableDnsSupport: true
-      VPCB_EnableDnsHostnames: false
-      VPCB_EnableDnsSupport: true
+      VPCAEnableDnsHostnames: true
+      VPCAEnableDnsSupport: true
+      VPCBEnableDnsHostnames: false
+      VPCBEnableDnsSupport: true
 
       DefaultTenancy: "default"
 
@@ -27,9 +27,9 @@ Resources:
     UpdateReplacePolicy: Delete
     DeletionPolicy: Delete
     Properties:
-      CidrBlock: !FindInMap [Values, Config, VPCA_CIDR]
-      EnableDnsSupport: !FindInMap [Values, Config, VPCA_EnableDnsSupport]
-      EnableDnsHostnames: !FindInMap [Values, Config, VPCA_EnableDnsHostnames]
+      CidrBlock: !FindInMap [Values, Config, VPCACIDR]
+      EnableDnsSupport: !FindInMap [Values, Config, VPCAEnableDnsSupport]
+      EnableDnsHostnames: !FindInMap [Values, Config, VPCAEnableDnsHostnames]
       InstanceTenancy: !FindInMap [Values, Config, DefaultTenancy]
       Tags:
         - Key: Name
@@ -40,9 +40,9 @@ Resources:
     UpdateReplacePolicy: Delete
     DeletionPolicy: Delete
     Properties:
-      CidrBlock: !FindInMap [Values, Config, VPCB_CIDR]
-      EnableDnsSupport: !FindInMap [Values, Config, VPCB_EnableDnsSupport]
-      EnableDnsHostnames: !FindInMap [Values, Config, VPCB_EnableDnsHostnames]
+      CidrBlock: !FindInMap [Values, Config, VPCBCIDR]
+      EnableDnsSupport: !FindInMap [Values, Config, VPCBEnableDnsSupport]
+      EnableDnsHostnames: !FindInMap [Values, Config, VPCBEnableDnsHostnames]
       InstanceTenancy: !FindInMap [Values, Config, DefaultTenancy]
       Tags:
         - Key: Name
