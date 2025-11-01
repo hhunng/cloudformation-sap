@@ -51,6 +51,45 @@ Resources:
         - Key: Name
           Value: !FindInMap [Values, Config, VPCBName]
 
+  VPCASubnetA:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId: !Ref VPCA
+      CidrBlock: 10.0.0.0/24
+      AvailabilityZone: "ap-southeast-1a"
+      Tags:
+      - Key: Name
+        Value: VPCASubnetA
+
+  VPCASubnetB:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId: !Ref VPCA
+      CidrBlock: 10.0.1.0/24
+      AvailabilityZone: "ap-southeast-1b"
+      Tags:
+      - Key: Name
+        Value: VPCASubnetB
+
+  VPCBSubnetA:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId: !Ref VPCB
+      CidrBlock: 192.168.0.0/24
+      AvailabilityZone: "ap-southeast-1a"
+      Tags:
+      - Key: Name
+        Value: VPCBSubnetA
+
+  VPCBSubnetB:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId: !Ref VPCB
+      CidrBlock: 192.168.1.0/24
+      AvailabilityZone: "ap-southeast-1b"
+      Tags:
+      - Key: Name
+        Value: VPCBSubnetB
 
   VPCPeeringConnection:
     Type: AWS::EC2::VPCPeeringConnection
