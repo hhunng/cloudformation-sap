@@ -1,0 +1,4 @@
+template-file-path: network.yaml
+parameters: {}
+tags:
+  SystemOwner: hunglp2@hdbank.com.vn
