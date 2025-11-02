@@ -177,3 +177,15 @@ Resources:
       RouteTableId: !Ref VPCBIGWRTB
       DestinationCidrBlock: 10.0.0.0/16
       GatewayId: !Ref VPCPeeringConnection
+
+  VPCBSubnetAssociationA:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      SubnetId: !Ref VPCBSubnetA
+      RouteTableId: !Ref VPCBIGWRTB
+
+  VPCBSubnetAssociationB:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      SubnetId: !Ref VPCBSubnetB
+      RouteTableId: !Ref VPCBIGWRTB
