@@ -1,10 +1,6 @@
 AWSTemplateFormatVersion: "2010-09-09"
 Description: "Very simple Security Group"
 
-Resources:
-AWSTemplateFormatVersion: "2010-09-09"
-Description: "Dual VPC IPSec lab with inline dynamic config (Helm-like values)."
-
 Mappings:
   Values:
     Config:
@@ -28,28 +24,28 @@ Resources:
     UpdateReplacePolicy: Delete
     DeletionPolicy: Delete
     Properties:
-      CidrBlock: !FindInMap [Values, Config, VPCACIDR]
-      EnableDnsSupport: !FindInMap [Values, Config, VPCAEnableDnsSupport]
-      EnableDnsHostnames: !FindInMap [Values, Config, VPCAEnableDnsHostnames]
-      InstanceTenancy: !FindInMap [Values, Config, DefaultTenancy]
+      CidrBlock: !FindInMap [ Values, Config, VPCACIDR ]
+      EnableDnsSupport: !FindInMap [ Values, Config, VPCAEnableDnsSupport ]
+      EnableDnsHostnames: !FindInMap [ Values, Config, VPCAEnableDnsHostnames ]
+      InstanceTenancy: !FindInMap [ Values, Config, DefaultTenancy ]
       Tags:
-        - Key: Name
-          Value: !FindInMap [Values, Config, VPCAName]
-        - Key: Environment
-          Value: "Lab"
+      - Key: Name
+        Value: !FindInMap [ Values, Config, VPCAName ]
+      - Key: Environment
+        Value: "Lab"
 
   VPCB:
     Type: AWS::EC2::VPC
     UpdateReplacePolicy: Delete
     DeletionPolicy: Delete
     Properties:
-      CidrBlock: !FindInMap [Values, Config, VPCBCIDR]
-      EnableDnsSupport: !FindInMap [Values, Config, VPCBEnableDnsSupport]
-      EnableDnsHostnames: !FindInMap [Values, Config, VPCBEnableDnsHostnames]
-      InstanceTenancy: !FindInMap [Values, Config, DefaultTenancy]
+      CidrBlock: !FindInMap [ Values, Config, VPCBCIDR ]
+      EnableDnsSupport: !FindInMap [ Values, Config, VPCBEnableDnsSupport ]
+      EnableDnsHostnames: !FindInMap [ Values, Config, VPCBEnableDnsHostnames ]
+      InstanceTenancy: !FindInMap [ Values, Config, DefaultTenancy ]
       Tags:
-        - Key: Name
-          Value: !FindInMap [Values, Config, VPCBName]
+      - Key: Name
+        Value: !FindInMap [ Values, Config, VPCBName ]
 
   VPCASubnetA:
     Type: AWS::EC2::Subnet
@@ -102,16 +98,16 @@ Resources:
   VPCAIGW:
     Type: AWS::EC2::InternetGateway
     Properties:
-      Tags: 
-        - Key: Name
-          Value: VPCAIGW
+      Tags:
+      - Key: Name
+        Value: VPCAIGW
 
   VPCBIGW:
     Type: AWS::EC2::InternetGateway
     Properties:
-      Tags: 
-        - Key: Name
-          Value: VPCBIGW
+      Tags:
+      - Key: Name
+        Value: VPCBIGW
 
   VPCAIGWAttachment:
     Type: AWS::EC2::VPCGatewayAttachment
@@ -124,3 +120,30 @@ Resources:
     Properties:
       InternetGatewayId: !Ref VPCBIGW
       VpcId: !Ref VPCB
+
+  IGWRTB:
+    Type: AWS::EC2::RouteTable
+    Properties:
+      VpcId: !Ref VPCA
+      Tags:
+      - Key: Name
+        Value: IGWRTB
+
+  IGWRoute:
+    Type: AWS::EC2::Route
+    Properties:
+      RouteTableId: !Ref IGWRTB
+      DestinationCidrBlock: 0.0.0.0/0
+      GatewayId: !Ref VPCAIGW
+
+  VPCASubnetAssociationA:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      SubnetId: !Ref VPCASubnetA
+      RouteTableId: !Ref IGWRTB
+
+  VPCASubnetAssociationB:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      SubnetId: !Ref VPCASubnetB
+      RouteTableId: !Ref IGWRTB
