@@ -95,6 +95,7 @@ Resources:
       Tags:
       - Key: Name
         Value: VPCPeeringConnection
+
   VPCAIGW:
     Type: AWS::EC2::InternetGateway
     Properties:
@@ -121,25 +122,25 @@ Resources:
       InternetGatewayId: !Ref VPCBIGW
       VpcId: !Ref VPCB
 
-  IGWRTB:
+  VPCAIGWRTB:
     Type: AWS::EC2::RouteTable
     Properties:
       VpcId: !Ref VPCA
       Tags:
       - Key: Name
-        Value: IGWRTB
+        Value: VPCAIGWRTB
 
   IGWRoute:
     Type: AWS::EC2::Route
     Properties:
-      RouteTableId: !Ref IGWRTB
+      RouteTableId: !Ref VPCAIGWRTB
       DestinationCidrBlock: 0.0.0.0/0
       GatewayId: !Ref VPCAIGW
 
   PCRoute:
     Type: AWS::EC2::Route
     Properties:
-      RouteTableId: !Ref IGWRTB
+      RouteTableId: !Ref VPCAIGWRTB
       DestinationCidrBlock: 192.168.0.0/16
       GatewayId: !Ref VPCPeeringConnection
 
@@ -147,10 +148,32 @@ Resources:
     Type: AWS::EC2::SubnetRouteTableAssociation
     Properties:
       SubnetId: !Ref VPCASubnetA
-      RouteTableId: !Ref IGWRTB
+      RouteTableId: !Ref VPCAIGWRTB
 
   VPCASubnetAssociationB:
     Type: AWS::EC2::SubnetRouteTableAssociation
     Properties:
       SubnetId: !Ref VPCASubnetB
-      RouteTableId: !Ref IGWRTB
+      RouteTableId: !Ref VPCAIGWRTB
+
+  VPCBIGWRTB:
+    Type: AWS::EC2::RouteTable
+    Properties:
+      VpcId: !Ref VPCB
+      Tags:
+      - Key: Name
+        Value: VPCBIGWRTB
+
+  IGWRouteB:
+    Type: AWS::EC2::Route
+    Properties:
+      RouteTableId: !Ref VPCBIGWRTB
+      DestinationCidrBlock: 0.0.0.0/0
+      GatewayId: !Ref VPCBIGW
+
+  PCRouteB:
+    Type: AWS::EC2::Route
+    Properties:
+      RouteTableId: !Ref VPCBIGWRTB
+      DestinationCidrBlock: 10.0.0.0/16
+      GatewayId: !Ref VPCPeeringConnection
