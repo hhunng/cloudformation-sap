@@ -136,6 +136,13 @@ Resources:
       DestinationCidrBlock: 0.0.0.0/0
       GatewayId: !Ref VPCAIGW
 
+  PCRoute:
+    Type: AWS::EC2::Route
+    Properties:
+      RouteTableId: !Ref IGWRTB
+      DestinationCidrBlock: 192.168.0.0/16
+      GatewayId: !Ref VPCPeeringConnection
+
   VPCASubnetAssociationA:
     Type: AWS::EC2::SubnetRouteTableAssociation
     Properties:
