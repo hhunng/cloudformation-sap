@@ -47,7 +47,7 @@ Resources:
       - Key: Name
         Value: !FindInMap [ Values, Config, VPCBName ]
 
-  VPCASubnetA:
+  VPCASubnetAA:
     Type: AWS::EC2::Subnet
     Properties:
       VpcId: !Ref VPCA
