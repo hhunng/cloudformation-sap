@@ -1,0 +1,39 @@
+service: template-macro-worker
+
+custom:
+  projectName: template-macro-worker
+  stage: ${opt:stage, 'dev'}
+  region: ap-southeast-1
+  environment:
+    REGION_NAME: ${self:custom.region}
+
+
+provider:
+  name: aws
+  region: ${self:custom.region}
+  runtime: python3.12
+  stage: ${self:custom.stage}
+  deploymentMethod: changesets
+  deploymentPrefix: serverless
+
+functions:
+  macroFunction: ${file(sls/services/lambda.yaml):macroFunction}
+
+
+resources:
+  Resources:
+    LambdaRCP:
+      Type: AWS::Lambda::Permission
+      Properties:
+        Action: lambda:InvokeFunction
+        FunctionName: !Ref MacroFunctionLambdaFunction
+        Principal: cloudformation.amazonaws.com
+
+    MacroResource:
+      Type: AWS::CloudFormation::Macro
+      Properties:
+        Name: TemplateMacroWorker
+        FunctionName: !Ref MacroFunctionLambdaFunction
+        Description: Macro to process CloudFormation templates
+    
+      

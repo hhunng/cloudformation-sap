@@ -1,0 +1,20 @@
+{
+    "accountId": "261093894796",
+    "fragment": {
+        "AWSTemplateFormatVersion": "2010-09-09",
+        "Description": "Very simple S3 bucket",
+        "Resources": {
+            "MyBucket": {
+                "Type": "AWS::S3::Bucket",
+                "Properties": {
+                    "BucketName": "simple-example-xfsfs-abc123"
+                }
+            }
+        }
+    },
+    "transformId": "261093894796::Replication-Macro",
+    "requestId": "4b459ac9-6178-458c-adbd-a8deadc7bb93",
+    "region": "ap-southeast-1",
+    "params": {},
+    "templateParameterValues": {}
+}
