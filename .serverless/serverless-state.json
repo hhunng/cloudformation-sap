@@ -1,0 +1,281 @@
+{
+  "service": {
+    "service": "template-macro-worker",
+    "serviceObject": {
+      "name": "template-macro-worker"
+    },
+    "provider": {
+      "name": "aws",
+      "region": "ap-southeast-1",
+      "runtime": "python3.12",
+      "stage": "dev",
+      "deploymentMethod": "changesets",
+      "deploymentPrefix": "serverless",
+      "versionFunctions": true,
+      "compiledCloudFormationTemplate": {
+        "AWSTemplateFormatVersion": "2010-09-09",
+        "Description": "The AWS CloudFormation template for this Serverless application",
+        "Resources": {
+          "MacroFunctionLogGroup": {
+            "Type": "AWS::Logs::LogGroup",
+            "Properties": {
+              "LogGroupName": "/aws/lambda/lambda-function-apse1-dev-template-macro-worker"
+            }
+          },
+          "IamRoleLambdaExecution": {
+            "Type": "AWS::IAM::Role",
+            "Properties": {
+              "AssumeRolePolicyDocument": {
+                "Version": "2012-10-17",
+                "Statement": [
+                  {
+                    "Effect": "Allow",
+                    "Principal": {
+                      "Service": [
+                        "lambda.amazonaws.com"
+                      ]
+                    },
+                    "Action": [
+                      "sts:AssumeRole"
+                    ]
+                  }
+                ]
+              },
+              "Policies": [
+                {
+                  "PolicyName": {
+                    "Fn::Join": [
+                      "-",
+                      [
+                        "template-macro-worker",
+                        "dev",
+                        "lambda"
+                      ]
+                    ]
+                  },
+                  "PolicyDocument": {
+                    "Version": "2012-10-17",
+                    "Statement": [
+                      {
+                        "Effect": "Allow",
+                        "Action": [
+                          "logs:CreateLogStream",
+                          "logs:CreateLogGroup",
+                          "logs:TagResource"
+                        ],
+                        "Resource": [
+                          {
+                            "Fn::Sub": "arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/lambda-function-apse1-dev-template-macro-worker:*"
+                          }
+                        ]
+                      },
+                      {
+                        "Effect": "Allow",
+                        "Action": [
+                          "logs:PutLogEvents"
+                        ],
+                        "Resource": [
+                          {
+                            "Fn::Sub": "arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/lambda-function-apse1-dev-template-macro-worker:*:*"
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                }
+              ],
+              "Path": "/",
+              "RoleName": {
+                "Fn::Join": [
+                  "-",
+                  [
+                    "template-macro-worker",
+                    "dev",
+                    {
+                      "Ref": "AWS::Region"
+                    },
+                    "lambdaRole"
+                  ]
+                ]
+              }
+            }
+          },
+          "MacroFunctionLambdaFunction": {
+            "Type": "AWS::Lambda::Function",
+            "Properties": {
+              "Code": {
+                "S3Bucket": "serverless-framework-deployments-ap-southeast-1-7d6c9a5b-6f15",
+                "S3Key": "serverless/template-macro-worker/dev/1762164461327-2025-11-03T10:07:41.327Z/template-macro-worker.zip"
+              },
+              "Handler": "main.lambda_handler",
+              "Runtime": "python3.12",
+              "FunctionName": "lambda-function-apse1-dev-template-macro-worker",
+              "MemorySize": 128,
+              "Timeout": 600,
+              "Description": "Lambda worker to handle the macro template",
+              "Tags": [
+                {
+                  "Key": "Project",
+                  "Value": "Macro"
+                },
+                {
+                  "Key": "SystemOwner",
+                  "Value": "hunglp2"
+                },
+                {
+                  "Key": "CreatedBy",
+                  "Value": "serverless-framework"
+                },
+                {
+                  "Key": "Environment",
+                  "Value": "LAB"
+                }
+              ],
+              "Role": {
+                "Fn::GetAtt": [
+                  "IamRoleLambdaExecution",
+                  "Arn"
+                ]
+              }
+            },
+            "DependsOn": [
+              "MacroFunctionLogGroup"
+            ]
+          },
+          "MacroFunctionLambdaVersionogzUMN6GLP28Un3a6hEq3Kg5jrBMro7k53QHva79P3k": {
+            "Type": "AWS::Lambda::Version",
+            "DeletionPolicy": "Retain",
+            "Properties": {
+              "FunctionName": {
+                "Ref": "MacroFunctionLambdaFunction"
+              },
+              "CodeSha256": "/QivtwHXDV3onLjTF0Mfw938gzLXkI60zItsU+JPxVs=",
+              "Description": "Lambda worker to handle the macro template"
+            }
+          },
+          "LambdaRCP": {
+            "Type": "AWS::Lambda::Permission",
+            "Properties": {
+              "Action": "lambda:InvokeFunction",
+              "FunctionName": {
+                "Ref": "MacroFunctionLambdaFunction"
+              },
+              "Principal": "cloudformation.amazonaws.com"
+            }
+          },
+          "MacroResource": {
+            "Type": "AWS::CloudFormation::Macro",
+            "Properties": {
+              "Name": "TemplateMacroWorker",
+              "FunctionName": {
+                "Ref": "MacroFunctionLambdaFunction"
+              },
+              "Description": "Macro to process CloudFormation templates"
+            }
+          }
+        },
+        "Outputs": {
+          "ServerlessDeploymentBucketName": {
+            "Value": "serverless-framework-deployments-ap-southeast-1-7d6c9a5b-6f15",
+            "Export": {
+              "Name": "sls-template-macro-worker-dev-ServerlessDeploymentBucketName"
+            }
+          },
+          "MacroFunctionLambdaFunctionQualifiedArn": {
+            "Description": "Current Lambda function version",
+            "Value": {
+              "Ref": "MacroFunctionLambdaVersionogzUMN6GLP28Un3a6hEq3Kg5jrBMro7k53QHva79P3k"
+            },
+            "Export": {
+              "Name": "sls-template-macro-worker-dev-MacroFunctionLambdaFunctionQualifiedArn"
+            }
+          }
+        }
+      },
+      "vpc": {}
+    },
+    "custom": {
+      "projectName": "template-macro-worker",
+      "stage": "dev",
+      "region": "ap-southeast-1",
+      "environment": {
+        "REGION_NAME": "ap-southeast-1"
+      }
+    },
+    "pluginsData": {},
+    "functions": {
+      "macroFunction": {
+        "handler": "main.lambda_handler",
+        "name": "lambda-function-apse1-dev-template-macro-worker",
+        "description": "Lambda worker to handle the macro template",
+        "runtime": "python3.12",
+        "memorySize": 128,
+        "timeout": 600,
+        "runtimeManagement": {
+          "mode": "auto"
+        },
+        "tags": {
+          "Project": "Macro",
+          "SystemOwner": "hunglp2",
+          "CreatedBy": "serverless-framework",
+          "Environment": "LAB"
+        },
+        "events": [],
+        "package": {},
+        "memory": 128,
+        "vpc": {},
+        "versionLogicalId": "MacroFunctionLambdaVersionogzUMN6GLP28Un3a6hEq3Kg5jrBMro7k53QHva79P3k"
+      }
+    },
+    "resources": {
+      "Resources": {
+        "LambdaRCP": {
+          "Type": "AWS::Lambda::Permission",
+          "Properties": {
+            "Action": "lambda:InvokeFunction",
+            "FunctionName": {
+              "Ref": "MacroFunctionLambdaFunction"
+            },
+            "Principal": "cloudformation.amazonaws.com"
+          }
+        },
+        "MacroResource": {
+          "Type": "AWS::CloudFormation::Macro",
+          "Properties": {
+            "Name": "TemplateMacroWorker",
+            "FunctionName": {
+              "Ref": "MacroFunctionLambdaFunction"
+            },
+            "Description": "Macro to process CloudFormation templates"
+          }
+        }
+      },
+      "Outputs": {}
+    },
+    "configValidationMode": "warn",
+    "serviceFilename": "serverless",
+    "initialServerlessConfig": {
+      "service": "template-macro-worker",
+      "custom": {
+        "$ref": "$[\"service\"][\"custom\"]"
+      },
+      "provider": {
+        "$ref": "$[\"service\"][\"provider\"]"
+      },
+      "functions": {
+        "$ref": "$[\"service\"][\"functions\"]"
+      },
+      "resources": {
+        "$ref": "$[\"service\"][\"resources\"]"
+      }
+    },
+    "appId": null,
+    "orgId": null,
+    "layers": {},
+    "artifact": "/home/hunglp2/SAP/cloudformation-sap/.serverless/template-macro-worker.zip"
+  },
+  "package": {
+    "artifactDirectoryName": "serverless/template-macro-worker/dev/1762164461327-2025-11-03T10:07:41.327Z",
+    "artifact": "template-macro-worker.zip"
+  }
+}
