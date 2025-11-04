@@ -34,8 +34,6 @@ def lambda_handler(event, context):
 
 def process_template(event):
     template = event['fragment']
-def process_template(event):
-    template = event['fragment']
     parameters = template.get('Parameters', {})
     resources = template.get('Resources', {})
     
