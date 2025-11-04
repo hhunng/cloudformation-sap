@@ -1,5 +1,5 @@
 AWSTemplateFormatVersion: "2010-09-09"
-Description: "Very simple Security Group..."
+Description: "Very simple Security Group...."
 
 Transform:
   - TemplateMacroWorker

@@ -154,14 +154,9 @@ def process_string_value(value, config_item, resource_mappings):
             config_key, attr = parts
             
             # Handle resource references (e.g., "subnets.vpcIdRef")
-            if attr.endswith('Ref') and config_key in resource_mappings:
+            if attr.endswith('Ref'):
                 ref_name = config_item.get(attr)
                 if ref_name:
-                    # Find the actual resource name from mappings
-                    for resource_type, mappings in resource_mappings.items():
-                        if ref_name in mappings:
-                            return {'Ref': mappings[ref_name]}
-                    # If not found in mappings, try direct reference
                     return {'Ref': ref_name}
             
             # Handle direct config value references (e.g., "vpcs.cidr")
