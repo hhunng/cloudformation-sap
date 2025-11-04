@@ -1,7 +1,40 @@
 import json
 import yaml
+import logging
+
+# Configure logging
+log = logging.getLogger()
+log.setLevel(logging.INFO)
 
 def lambda_handler(event, context):
+    """
+    Returns processed template back to CloudFormation
+    """
+    log.info(json.dumps(event))
+    
+    try:
+        processed_template = process_template(event)
+        log.info('Processed template: ' + json.dumps(processed_template))
+        
+        response = {
+            'requestId': event['requestId'],
+            'status': 'SUCCESS',
+            'fragment': processed_template
+        }
+        
+        return response
+        
+    except Exception as e:
+        log.error(f"Error processing template: {str(e)}")
+        return {
+            'requestId': event['requestId'],
+            'status': 'FAILED',
+            'errorMessage': str(e)
+        }
+
+def process_template(event):
+    template = event['fragment']
+def process_template(event):
     template = event['fragment']
     parameters = template.get('Parameters', {})
     resources = template.get('Resources', {})
@@ -55,11 +88,7 @@ def lambda_handler(event, context):
     # Update template
     template['Resources'] = new_resources
     
-    return {
-        'requestId': event['requestId'],
-        'status': 'success',
-        'fragment': template
-    }
+    return template
 
 def find_config_key(properties, config_data):
     """Find which config array this resource should use based on property patterns"""
