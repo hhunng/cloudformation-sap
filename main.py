@@ -161,6 +161,10 @@ def process_string_value(value, config_item, resource_mappings):
             
             # Handle direct config value references (e.g., "vpcs.cidr")
             elif attr in config_item:
-                return config_item[attr]
+                config_value = config_item[attr]
+                # If the attribute name suggests it's a reference, wrap in Ref
+                if attr.endswith('Ref') or attr.endswith('Id'):
+                    return {'Ref': config_value}
+                return config_value
     
     return value
