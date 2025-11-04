@@ -1,0 +1,75 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Description: "Very simple Security Group..."
+
+Transform:
+  - TemplateMacroWorker
+
+Parameters:
+  VpcConfig:
+    Type: String
+    Default: |
+      vpcs:
+        - name: VPCA
+          cidr: 10.0.0.0/16
+          VPCEnableDnsHostnames: "true"
+          VPCEnableDnsSupport: "true"
+          DefaultTenancy: "default"
+
+        - name: VPCB
+          cidr: 192.168.0.0/16
+          VPCEnableDnsHostnames: "true"
+          VPCEnableDnsSupport: "true"
+          DefaultTenancy: "default"
+
+      subnets:
+        - name: PublicSubnetA
+          vpcIdRef: VPC1
+          cidr: 10.0.0.0/24
+          availabilityZone: us-east-1a
+        - name: PublicSubnetB
+          vpcIdRef: VPC1
+          cidr: 10.0.1.0/24
+          availabilityZone: us-east-1b
+        - name: PublicSubnetC
+          vpcIdRef: VPC2
+          cidr: 192.168.0.0/24
+          availabilityZone: us-east-1a
+        - name: PublicSubnetD
+          vpcIdRef: VPC2
+          cidr: 192.168.1.0/24
+          availabilityZone: us-east-1b
+          
+      igws:
+        - name: IGWA
+        - name: IGWB
+Resources:
+  VPC:
+    Type: AWS::EC2::VPC
+    Properties:
+      CidrBlock: vpcs.cidr
+      EnableDnsSupport: vpcs.VPCEnableDnsSupport
+      EnableDnsHostnames: vpcs.VPCEnableDnsHostnames
+      InstanceTenancy: vpcs.DefaultTenancy
+      Tags:
+      - Key: Name
+        Value: vpcs.name
+      - Key: Environment
+        Value: "Lab"
+
+  Subnet:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId: subnets.vpcIdRef
+      CidrBlock: subnets.cidr
+      AvailabilityZone: subnets.availabilityZone
+      Tags:
+      - Key: Name
+        Value: subnets.name
+
+  InternetGateway:
+    Type: AWS::EC2::InternetGateway
+    Properties:
+      Tags:
+      - Key: Name
+        Value: igws.name
+

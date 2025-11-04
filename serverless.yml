@@ -6,12 +6,14 @@ custom:
   region: ap-southeast-1
   environment:
     REGION_NAME: ${self:custom.region}
+  pythonRequirements:
+    dockerizePip: non-linux
 
 
 provider:
   name: aws
   region: ${self:custom.region}
-  runtime: python3.12
+  runtime: python3.10
   stage: ${self:custom.stage}
   deploymentMethod: changesets
   deploymentPrefix: serverless

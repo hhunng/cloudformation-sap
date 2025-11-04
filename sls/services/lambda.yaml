@@ -2,7 +2,7 @@ macroFunction:
   handler: main.lambda_handler
   name: lambda-function-apse1-${self:custom.stage}-${self:custom.projectName}
   description: Lambda worker to handle the macro template
-  runtime: python3.12
+  runtime: python3.10
   memorySize: 128
   timeout: 600
   runtimeManagement:
