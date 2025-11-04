@@ -73,11 +73,3 @@ Resources:
       - Key: Name
         Value: igws.name
 
-  VPCPeeringConnections:
-    Type: AWS::EC2::VPCPeeringConnection
-    Properties:
-      PeerVpcId: !Ref VPC2
-      VpcId: !Ref VPC1
-      Tags:
-      - Key: Name
-        Value: "VPCPeeringConnectionBetweenVPCAandVPCB"
