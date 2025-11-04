@@ -1,4 +1,4 @@
-template-file-path: network.yaml
+template-file-path: cloudformation.yaml
 parameters: {}
 tags:
   SystemOwner: hunglp2@hdbank.com.vn
