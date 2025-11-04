@@ -25,19 +25,19 @@ Parameters:
         - name: PublicSubnetA
           vpcIdRef: VPC1
           cidr: 10.0.0.0/24
-          availabilityZone: us-east-1a
+          availabilityZone: ap-southeast-1a
         - name: PublicSubnetB
           vpcIdRef: VPC1
           cidr: 10.0.1.0/24
-          availabilityZone: us-east-1b
+          availabilityZone: ap-southeast-1b
         - name: PublicSubnetC
           vpcIdRef: VPC2
           cidr: 192.168.0.0/24
-          availabilityZone: us-east-1a
+          availabilityZone: ap-southeast-1a
         - name: PublicSubnetD
           vpcIdRef: VPC2
           cidr: 192.168.1.0/24
-          availabilityZone: us-east-1b
+          availabilityZone: ap-southeast-1b
           
       igws:
         - name: IGWA
